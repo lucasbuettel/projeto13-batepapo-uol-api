@@ -73,7 +73,7 @@ app.post("/participants",  async (req, res) => {
     try{
         await db.collection("participants").insertOne(userName);
         await db.collection("messages").insertOne(login);
-        console.log("Post feito com sucesso")
+        
         res.sendStatus(201)
     }
     catch (err){
@@ -133,7 +133,7 @@ app.post("/messages",  async (req, res) => {
 
     try{
         await db.collection("messages").insertOne(verifMessage);
-        console.log("Post feito com sucesso")
+        
         res.sendStatus(201)
     }
     catch (err){
@@ -150,10 +150,10 @@ app.get("/messages",  async (req, res) => {
 
     try {
         const message = await db.collection("messages").find().toArray();
-        let lastMessages = message.filter(m => m.to === user ||
-            m.from === user || m.to === 'Todos');
+        let lastMessages = message.filter(m => 
+            m.to === user || m.from === user || m.to === 'Todos');
 
-        if (limit) {
+        if (!limit) {
             lastMessages = lastMessages.slice(0, limit);
         }
         res.send(lastMessages);
@@ -179,7 +179,7 @@ app.post("/status",  async (req, res) => {
             { name: user },
             { $set: { lastStatus: Date.now() } }
             );
-        console.log("Post feito com sucesso");
+     
         res.sendStatus(201);
     }
     catch (err){
